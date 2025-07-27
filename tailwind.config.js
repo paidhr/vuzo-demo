@@ -1,0 +1,116 @@
+/** @type {import('tailwindcss').Config} */
+import tailwindcssAnimate from "tailwindcss-animate";
+
+export default {
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      colors: {
+        primary50: "#e8f0fe",
+        primary100: "#b6cffc",
+        primary200: "#93b8fa",
+        primary300: "#6297f8",
+        primary400: "#4383f6",
+        primary500: "#004AF5",
+        primary600: "#125bde",
+        primary700: "#0e47ad",
+        primary800: "#0b3786",
+        primary900: "#082a66",
+
+        padeBlack: "#0c1b3d",
+        padeSubtext: "#6c7a93",
+        padeYellow: "#fcbf23",
+        padeLightBlue: "#ccdbfd",
+
+        secondary50: "#fefee8",
+        secondary100: "#fbfcb6",
+        secondary200: "#f9fa93",
+        secondary300: "#f6f862",
+        secondary400: "#f5f643",
+        secondary500: "#f2f414",
+        secondary600: "#dcde12",
+        secondary700: "#acad0e",
+        secondary800: "#85860b",
+        secondary900: "#666608",
+
+        success50: "#ebf4e7",
+        success100: "#C1EFDA",
+        success200: "#a4ce8e",
+        success300: "#7bb75b",
+        success400: "#61a93b",
+        success500: "#3a940a",
+        success600: "#358709",
+        success700: "#296907",
+        success800: "#205106",
+        success900: "#183e04",
+
+        danger50: "#fee8e8",
+        danger100: "#fcb6b7",
+        danger200: "#fa9395",
+        danger300: "#f86264",
+        danger400: "#f64346",
+        danger500: "#f41418",
+        danger600: "#de1216",
+        danger700: "#ad0e11",
+        danger800: "#860b0d",
+        danger900: "#66080a",
+
+        neutral0: "#ffffff",
+        neutral10: "#fafbfb",
+        neutral20: "#f5f6f7",
+        neutral30: "#ebedf0",
+        neutral40: "#dfe2e6",
+        neutral50: "#c2c7d0",
+        neutral60: "#b3b9c4",
+        neutral70: "#a6aebb",
+        neutral80: "#98a1b0",
+        neutral90: "#8993a4",
+        neutral100: "#7a8699",
+        neutral200: "#6b788e",
+        neutral300: "#5d6b82",
+        neutral400: "#505f79",
+        neutral500: "#42526d",
+        neutral600: "#354764",
+        neutral700: "#243757",
+        neutral800: "#15294b",
+        neutral900: "#091e42",
+
+        contentBg: "#F3F5FB",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        circular: "Circular Std",
+        avenir: "Avenir",
+        autograph: "Autografia PERSONAL USE ONLY",
+      },
+    },
+  },
+  plugins: [tailwindcssAnimate],
+};

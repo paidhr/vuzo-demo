@@ -1,0 +1,13 @@
+export { default as H1 } from "./H1";
+export { default as H2 } from "./H2";
+export { default as H3 } from "./H3";
+export { default as H4 } from "./H4";
+export { default as H5 } from "./H5";
+export { default as H6 } from "./H6";
+export { default as P1 } from "./P1";
+export { default as P2 } from "./P2";
+export { default as P3 } from "./P3";
+export { default as Span1 } from "./Span1";
+export { default as Span2 } from "./Span2";
+export { default as Caption } from "./Caption";
+export { default as LinkText } from "./LinkText";
