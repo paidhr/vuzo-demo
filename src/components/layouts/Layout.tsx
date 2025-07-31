@@ -3,21 +3,22 @@ import { Layout, Spin } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { TopNavigationBar } from "./TopNavigationBar";
 import SideNavigationBar from "./SideNavigationBar";
+import useAuthStore from "@/stores/auth/authStore";
 // import useAuthStore from "@/stores/auth/authStore";
 
 const { Header, Content } = Layout;
 
 const DashboardLayout: React.FC = () => {
   const [isSidebarOpen, toggleSidebar] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate("/auth/login", { replace: true });
-  //   }
-  // }, [isAuthenticated]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/auth/login", { replace: true });
+    }
+  }, [isAuthenticated]);
 
   return (
     <Layout>

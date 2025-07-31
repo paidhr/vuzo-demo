@@ -3,12 +3,11 @@ import {
   Input,
   Select,
   DatePicker,
-  Button,
   Radio,
   Checkbox,
   type FormProps,
 } from "antd";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -172,27 +171,60 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         return <Input placeholder={field.placeholder} {...commonProps} />;
       case "select":
         return (
-          <Select placeholder={field.placeholder} {...commonProps}>
-            {field?.options?.map((opt) => (
-              <Option key={opt.value} value={opt.value}>
-                {opt.label}
-              </Option>
-            ))}
-          </Select>
+          <Select
+            placeholder={field.placeholder}
+            showSearch
+            filterOption={(
+              input: string,
+              option?: {
+                label: string;
+                value: string;
+                children: React.ReactNode;
+              }
+            ) => {
+              if (option) {
+                const label = option.label || "";
+                return label?.toLowerCase().indexOf(input?.toLowerCase()) >= 0;
+              } else {
+                return false;
+              }
+            }}
+            options={field?.options?.map((i) => ({
+              label: i.label,
+              value: i.value as string,
+              children: null,
+            }))}
+            {...commonProps}
+          />
         );
       case "multiSelect":
         return (
           <Select
             mode="multiple"
+            showSearch
             placeholder={field.placeholder}
+            filterOption={(
+              input: string,
+              option?: {
+                label: string;
+                value: string;
+                children: React.ReactNode;
+              }
+            ) => {
+              if (option) {
+                const label = option.label || "";
+                return label?.toLowerCase().indexOf(input?.toLowerCase()) >= 0;
+              } else {
+                return false;
+              }
+            }}
+            options={field?.options?.map((i) => ({
+              label: i.label,
+              value: i.value as string,
+              children: null,
+            }))}
             {...commonProps}
-          >
-            {field?.options?.map((opt) => (
-              <Option key={opt.value} value={opt.value}>
-                {opt.label}
-              </Option>
-            ))}
-          </Select>
+          />
         );
       case "date":
         return <DatePicker {...commonProps} />;
@@ -266,131 +298,131 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 export default DynamicForm;
 
 // Example usage with fields
-const exampleFields: FieldConfig[] = [
-  {
-    name: "username",
-    label: "Username",
-    type: "input",
-    placeholder: "Enter username",
-    rules: [{ required: true, message: "Username is required" }],
-  },
-  {
-    name: "accountType",
-    label: "Account Type",
-    type: "select",
-    options: [
-      { label: "Personal", value: "Personal" },
-      { label: "Business", value: "Business" },
-      { label: "Enterprise", value: "Enterprise" },
-    ],
-    placeholder: "Select account type",
-    rules: [{ required: true, message: "Account type is required" }],
-  },
-  {
-    name: "companyName",
-    label: "Company Name",
-    type: "input",
-    placeholder: "Enter company name",
-    rules: [{ required: true, message: "Company name is required" }],
-    dependencies: {
-      field: "accountType",
-      condition: "equals",
-      value: ["Business", "Enterprise"],
-      action: "show",
-    },
-  },
-  {
-    name: "employeeCount",
-    label: "Number of Employees",
-    type: "select",
-    options: [
-      { label: "1-10", value: "1-10" },
-      { label: "11-50", value: "11-50" },
-      { label: "51-200", value: "51-200" },
-      { label: "201+", value: "201+" },
-    ],
-    placeholder: "Select employee count",
-    rules: [{ required: true, message: "Employee count is required" }],
-    dependencies: {
-      field: "accountType",
-      condition: "equals",
-      value: "Enterprise",
-      action: "show",
-    },
-  },
-  {
-    name: "hasSupport",
-    label: "Do you need technical support?",
-    type: "radio",
-    options: [
-      { label: "Yes", value: "Yes" },
-      { label: "No", value: "No" },
-    ],
-    rules: [{ required: true, message: "Support preference is required" }],
-  },
-  {
-    name: "supportLevel",
-    label: "Support Level",
-    type: "select",
-    options: [
-      { label: "Basic", value: "Basic" },
-      { label: "Standard", value: "Standard" },
-      { label: "Premium", value: "Premium" },
-    ],
-    placeholder: "Select support level",
-    rules: [{ required: true, message: "Support level is required" }],
-    dependencies: {
-      field: "hasSupport",
-      condition: "equals",
-      value: "Yes",
-      action: "show",
-    },
-  },
-  {
-    name: "contactMethod",
-    label: "Preferred Contact Method",
-    type: "checkbox",
-    options: [
-      { label: "Email", value: "Email" },
-      { label: "Phone", value: "Phone" },
-      { label: "Chat", value: "Chat" },
-    ],
-    dependencies: {
-      field: "hasSupport",
-      condition: "equals",
-      value: "Yes",
-      action: "show",
-    },
-  },
-  {
-    name: "gender",
-    label: "Gender",
-    type: "select",
-    options: [
-      { label: "Male", value: "Male" },
-      { label: "Female", value: "Female" },
-      { label: "Other", value: "Other" },
-    ],
-    placeholder: "Select gender",
-    rules: [{ required: true, message: "Gender is required" }],
-  },
-  {
-    name: "customGender",
-    label: "Please specify",
-    type: "input",
-    placeholder: "Please specify your gender",
-    rules: [{ required: true, message: "Please specify your gender" }],
-    dependencies: {
-      field: "gender",
-      condition: "equals",
-      value: "Other",
-      action: "show",
-    },
-  },
-  {
-    name: "dob",
-    label: "Date of Birth",
-    type: "date",
-    rules: [{ required: true, message: "Date of Birth is required" }],
-  },
-];
+// const exampleFields: FieldConfig[] = [
+//   {
+//     name: "username",
+//     label: "Username",
+//     type: "input",
+//     placeholder: "Enter username",
+//     rules: [{ required: true, message: "Username is required" }],
+//   },
+//   {
+//     name: "accountType",
+//     label: "Account Type",
+//     type: "select",
+//     options: [
+//       { label: "Personal", value: "Personal" },
+//       { label: "Business", value: "Business" },
+//       { label: "Enterprise", value: "Enterprise" },
+//     ],
+//     placeholder: "Select account type",
+//     rules: [{ required: true, message: "Account type is required" }],
+//   },
+//   {
+//     name: "companyName",
+//     label: "Company Name",
+//     type: "input",
+//     placeholder: "Enter company name",
+//     rules: [{ required: true, message: "Company name is required" }],
+//     dependencies: {
+//       field: "accountType",
+//       condition: "equals",
+//       value: ["Business", "Enterprise"],
+//       action: "show",
+//     },
+//   },
+//   {
+//     name: "employeeCount",
+//     label: "Number of Employees",
+//     type: "select",
+//     options: [
+//       { label: "1-10", value: "1-10" },
+//       { label: "11-50", value: "11-50" },
+//       { label: "51-200", value: "51-200" },
+//       { label: "201+", value: "201+" },
+//     ],
+//     placeholder: "Select employee count",
+//     rules: [{ required: true, message: "Employee count is required" }],
+//     dependencies: {
+//       field: "accountType",
+//       condition: "equals",
+//       value: "Enterprise",
+//       action: "show",
+//     },
+//   },
+//   {
+//     name: "hasSupport",
+//     label: "Do you need technical support?",
+//     type: "radio",
+//     options: [
+//       { label: "Yes", value: "Yes" },
+//       { label: "No", value: "No" },
+//     ],
+//     rules: [{ required: true, message: "Support preference is required" }],
+//   },
+//   {
+//     name: "supportLevel",
+//     label: "Support Level",
+//     type: "select",
+//     options: [
+//       { label: "Basic", value: "Basic" },
+//       { label: "Standard", value: "Standard" },
+//       { label: "Premium", value: "Premium" },
+//     ],
+//     placeholder: "Select support level",
+//     rules: [{ required: true, message: "Support level is required" }],
+//     dependencies: {
+//       field: "hasSupport",
+//       condition: "equals",
+//       value: "Yes",
+//       action: "show",
+//     },
+//   },
+//   {
+//     name: "contactMethod",
+//     label: "Preferred Contact Method",
+//     type: "checkbox",
+//     options: [
+//       { label: "Email", value: "Email" },
+//       { label: "Phone", value: "Phone" },
+//       { label: "Chat", value: "Chat" },
+//     ],
+//     dependencies: {
+//       field: "hasSupport",
+//       condition: "equals",
+//       value: "Yes",
+//       action: "show",
+//     },
+//   },
+//   {
+//     name: "gender",
+//     label: "Gender",
+//     type: "select",
+//     options: [
+//       { label: "Male", value: "Male" },
+//       { label: "Female", value: "Female" },
+//       { label: "Other", value: "Other" },
+//     ],
+//     placeholder: "Select gender",
+//     rules: [{ required: true, message: "Gender is required" }],
+//   },
+//   {
+//     name: "customGender",
+//     label: "Please specify",
+//     type: "input",
+//     placeholder: "Please specify your gender",
+//     rules: [{ required: true, message: "Please specify your gender" }],
+//     dependencies: {
+//       field: "gender",
+//       condition: "equals",
+//       value: "Other",
+//       action: "show",
+//     },
+//   },
+//   {
+//     name: "dob",
+//     label: "Date of Birth",
+//     type: "date",
+//     rules: [{ required: true, message: "Date of Birth is required" }],
+//   },
+// ];

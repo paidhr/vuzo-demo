@@ -19,8 +19,8 @@ const fields: FieldConfig[] = [
     label: "Is this allowance taxable?",
     type: "radio",
     options: [
-      { label: "Yes", value: "yes" },
-      { label: "No", value: "no" },
+      { label: "Yes", value: "true" },
+      { label: "No", value: "false" },
     ],
     rules: [{ required: true, message: "Taxable preference is required" }],
   },
@@ -30,7 +30,7 @@ const fields: FieldConfig[] = [
     type: "radio",
     options: [
       { label: "Regular", value: "regular" },
-      { label: "Off-cycle", value: "off-cycle" },
+      { label: "Special", value: "special" },
     ],
     rules: [{ required: true, message: "Taxable preference is required" }],
   },

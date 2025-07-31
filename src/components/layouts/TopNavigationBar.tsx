@@ -181,7 +181,7 @@ export const TopNavigationBar: React.FC<{
       <div className="flex-grow" />
 
       {/* User avatar / dropdown */}
-      <UserProfile />
+      {/* <UserProfile /> */}
     </div>
   );
 };
