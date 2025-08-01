@@ -32,32 +32,32 @@ const router = createBrowserRouter([
         ),
         children: dashboardRoutes as RouteObject[],
       },
-      ...authRoutes,
+      // ...authRoutes,
     ],
   },
-  {
-    path: "auth/",
-    element: <AuthLayout />,
-    children: [
-      {
-        index: true,
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "forgot-password",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "verify",
-        element: <VerifyAccount />,
-      },
-      {
-        path: "reset-password",
-        element: <ResetPassword />,
-      },
-    ],
-  },
+  // {
+  //   path: "auth/",
+  //   element: <AuthLayout />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       path: "login",
+  //       element: <Login />,
+  //     },
+  //     {
+  //       path: "forgot-password",
+  //       element: <ForgotPassword />,
+  //     },
+  //     {
+  //       path: "verify",
+  //       element: <VerifyAccount />,
+  //     },
+  //     {
+  //       path: "reset-password",
+  //       element: <ResetPassword />,
+  //     },
+  //   ],
+  // },
 
   // unknown page
   {

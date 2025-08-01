@@ -265,8 +265,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         </div>
       )}
 
-      <Form layout="vertical" {...rest}>
-        {fields?.map((field) => {
+      <Form  layout="vertical" {...rest}>
+    <div className="grid grid-cols-2 gap-x-4 gap-y-0">
+          {fields?.map((field) => {
           const isVisible = shouldShowField(field);
           const isEnabled = shouldEnableField(field);
           const dynamicRules = getDynamicRules(field);
@@ -290,6 +291,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             </Form.Item>
           );
         })}
+    </div>
       </Form>
     </div>
   );

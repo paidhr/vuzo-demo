@@ -121,6 +121,32 @@ const NavTab: React.FC<{
   );
 };
 
+// const navItems = [
+//   {
+//     title: "payroll",
+//     actions: [
+//       {
+//         title: "Create Allowance",
+//         route: "/payroll/allowances/create",
+//         icon: <Wallet className="w-4" />,
+//         enabled: true,
+//       },
+//       {
+//         title: "Create Paygrade",
+//         route: "/payroll/paygrades/create",
+//         icon: <BadgeDollarSign className="w-4" />,
+//         enabled: true,
+//       },
+//       {
+//         title: "Create Payband",
+//         route: "/payroll/paybands/create",
+//         icon: <BadgeDollarSign className="w-4" />,
+//         enabled: true,
+//       },
+//     ],
+//   },
+// ];
+
 const navItems = [
   {
     title: "payroll",
@@ -145,7 +171,26 @@ const navItems = [
       },
     ],
   },
+  {
+    title: "organization",
+    actions: [
+      {
+        title: "Companies",
+        icon: <Home className="w-4" />,
+        enabled: true,
+        subActions: [
+          {
+            title: "Create Company",
+            route: "/company/create",
+            patterns: [{ path: "/company/create" }],
+            enabled: true,
+          },
+        ],
+      },
+    ],
+  },
 ];
+
 
 const SideNavigationBar: React.FC<{
   isSidebarOpen: boolean;
