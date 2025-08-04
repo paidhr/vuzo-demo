@@ -12,37 +12,10 @@ import { useMemo } from "react";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-/**
- * Enhanced Dynamic Form Builder with Field Dependencies
- *
- * Features:
- * - Conditional field visibility (show/hide fields based on other field values)
- * - Field enabling/disabling based on conditions
- * - Dynamic validation rules that adapt to field visibility
- * - Form data cleaning (removes values from hidden fields)
- * - Multiple condition types: equals, notEquals, includes, exists, etc.
- * - Smooth transitions and visual feedback
- *
- * Dependency Actions:
- * - "show": Show field when condition is met
- * - "hide": Hide field when condition is met
- * - "enable": Enable field when condition is met
- * - "disable": Disable field when condition is met
- *
- * Condition Types:
- * - "equals": Field value equals specified value(s)
- * - "notEquals": Field value does not equal specified value(s)
- * - "includes": Field value (array) includes any of the specified values
- * - "notIncludes": Field value (array) does not include any specified values
- * - "exists": Field has a non-empty value
- * - "notExists": Field is empty or undefined
- */
 
-// Example field config with dependencies:
-// This has been moved to the bottom as an example usage component
 
 export type DependencyConfig = {
-  field: string; // The field name to watch
+  field: string; 
   condition:
     | "equals"
     | "notEquals"
@@ -50,13 +23,13 @@ export type DependencyConfig = {
     | "notIncludes"
     | "exists"
     | "notExists";
-  value?: string | string[] | number | boolean; // The value(s) to compare against
-  action: "show" | "hide" | "enable" | "disable"; // What to do when condition is met
+  value?: string | string[] | number | boolean; 
+  action: "show" | "hide" | "enable" | "disable"; 
 };
 
 export type FieldConfig = {
-  name: string;
-  label: string;
+ name: string | string[];
+   label: string;
   type:
     | "input"
     | "select"
@@ -66,6 +39,7 @@ export type FieldConfig = {
     | "radio"
     | "checkbox";
   placeholder?: string;
+  inputType?: "text" | "email" | "number" | "tel" | "url" | "password"; 
   options?: Option[];
   rules?: any[];
   dependencies?: DependencyConfig;
@@ -79,10 +53,12 @@ export interface Option {
 export type DynamicFormProps = {
   fields: FieldConfig[];
   showDebugPanel?: boolean;
+  url:string
 } & FormProps;
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
   fields,
+  url,
   showDebugPanel = false,
   ...rest
 }) => {
@@ -168,7 +144,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
     switch (field.type) {
       case "input":
-        return <Input placeholder={field.placeholder} {...commonProps} />;
+        return <Input placeholder={field.placeholder} type={field.inputType || "text"} {...commonProps} />;
       case "select":
         return (
           <Select
@@ -227,9 +203,10 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           />
         );
       case "date":
-        return <DatePicker {...commonProps} />;
+        return <DatePicker {...commonProps}     format= "YYYY-MM-DD"
+ />;
       case "dateRange":
-        return <RangePicker {...commonProps} />;
+        return <RangePicker {...commonProps} format= "YYYY-MM-DD" />;
       case "radio":
         return (
           <Radio.Group disabled={!isEnabled}>
@@ -257,16 +234,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
   return (
     <div>
-      {/* Debug panel to show current form values */}
-      {showDebugPanel && (
-        <div className="font-avenir text-xs my-5 rounded-md bg-padeLightBlue p-2">
-          <strong>Current Form Values:</strong>
-          <pre>{JSON.stringify(watchedValues, null, 2)}</pre>
-        </div>
-      )}
+   
 
-      <Form layout="vertical" {...rest}>
-        {fields?.map((field) => {
+      <Form  layout="vertical" {...rest}>
+    <div className="grid grid-cols-2 gap-x-4 gap-y-0">
+          {fields?.map((field) => {
           const isVisible = shouldShowField(field);
           const isEnabled = shouldEnableField(field);
           const dynamicRules = getDynamicRules(field);
@@ -277,7 +249,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
           return (
             <Form.Item
-              key={field.name}
+key={Array.isArray(field.name) ? field.name.join(".") : field.name}
               name={field.name}
               label={field.label}
               rules={dynamicRules}
@@ -290,139 +262,48 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             </Form.Item>
           );
         })}
+    </div>
       </Form>
+       {showDebugPanel && (
+  <div className="font-mono text-xs my-5 rounded-md bg-padeLightBlue p-4">
+    <p className="mb-2">
+      Url: <span className="text-blue-600">{url}</span>
+    </p>
+    <strong className="block mb-1">Current Form Values:</strong>
+    <pre
+      className="whitespace-pre-wrap"
+      dangerouslySetInnerHTML={{
+        __html: prettyPrintJson(formatFormValues(watchedValues)),
+      }}
+    />
+  </div>
+)}
+
     </div>
   );
 };
 
 export default DynamicForm;
 
-// Example usage with fields
-// const exampleFields: FieldConfig[] = [
-//   {
-//     name: "username",
-//     label: "Username",
-//     type: "input",
-//     placeholder: "Enter username",
-//     rules: [{ required: true, message: "Username is required" }],
-//   },
-//   {
-//     name: "accountType",
-//     label: "Account Type",
-//     type: "select",
-//     options: [
-//       { label: "Personal", value: "Personal" },
-//       { label: "Business", value: "Business" },
-//       { label: "Enterprise", value: "Enterprise" },
-//     ],
-//     placeholder: "Select account type",
-//     rules: [{ required: true, message: "Account type is required" }],
-//   },
-//   {
-//     name: "companyName",
-//     label: "Company Name",
-//     type: "input",
-//     placeholder: "Enter company name",
-//     rules: [{ required: true, message: "Company name is required" }],
-//     dependencies: {
-//       field: "accountType",
-//       condition: "equals",
-//       value: ["Business", "Enterprise"],
-//       action: "show",
-//     },
-//   },
-//   {
-//     name: "employeeCount",
-//     label: "Number of Employees",
-//     type: "select",
-//     options: [
-//       { label: "1-10", value: "1-10" },
-//       { label: "11-50", value: "11-50" },
-//       { label: "51-200", value: "51-200" },
-//       { label: "201+", value: "201+" },
-//     ],
-//     placeholder: "Select employee count",
-//     rules: [{ required: true, message: "Employee count is required" }],
-//     dependencies: {
-//       field: "accountType",
-//       condition: "equals",
-//       value: "Enterprise",
-//       action: "show",
-//     },
-//   },
-//   {
-//     name: "hasSupport",
-//     label: "Do you need technical support?",
-//     type: "radio",
-//     options: [
-//       { label: "Yes", value: "Yes" },
-//       { label: "No", value: "No" },
-//     ],
-//     rules: [{ required: true, message: "Support preference is required" }],
-//   },
-//   {
-//     name: "supportLevel",
-//     label: "Support Level",
-//     type: "select",
-//     options: [
-//       { label: "Basic", value: "Basic" },
-//       { label: "Standard", value: "Standard" },
-//       { label: "Premium", value: "Premium" },
-//     ],
-//     placeholder: "Select support level",
-//     rules: [{ required: true, message: "Support level is required" }],
-//     dependencies: {
-//       field: "hasSupport",
-//       condition: "equals",
-//       value: "Yes",
-//       action: "show",
-//     },
-//   },
-//   {
-//     name: "contactMethod",
-//     label: "Preferred Contact Method",
-//     type: "checkbox",
-//     options: [
-//       { label: "Email", value: "Email" },
-//       { label: "Phone", value: "Phone" },
-//       { label: "Chat", value: "Chat" },
-//     ],
-//     dependencies: {
-//       field: "hasSupport",
-//       condition: "equals",
-//       value: "Yes",
-//       action: "show",
-//     },
-//   },
-//   {
-//     name: "gender",
-//     label: "Gender",
-//     type: "select",
-//     options: [
-//       { label: "Male", value: "Male" },
-//       { label: "Female", value: "Female" },
-//       { label: "Other", value: "Other" },
-//     ],
-//     placeholder: "Select gender",
-//     rules: [{ required: true, message: "Gender is required" }],
-//   },
-//   {
-//     name: "customGender",
-//     label: "Please specify",
-//     type: "input",
-//     placeholder: "Please specify your gender",
-//     rules: [{ required: true, message: "Please specify your gender" }],
-//     dependencies: {
-//       field: "gender",
-//       condition: "equals",
-//       value: "Other",
-//       action: "show",
-//     },
-//   },
-//   {
-//     name: "dob",
-//     label: "Date of Birth",
-//     type: "date",
-//     rules: [{ required: true, message: "Date of Birth is required" }],
-//   },
-// ];
+const prettyPrintJson = (obj: any) => {
+  const json = JSON.stringify(obj, null, 2);
+  return json
+    .replace(/"([^"]+)":/g, '<span class="text-red-600">"$1"</span>:') 
+    .replace(/: "([^"]+)"/g, ': <span class="text-green-600">"$1"</span>') 
+    .replace(/: ([0-9]+)/g, ': <span class="text-green-600">$1</span>'); 
+};
+const formatFormValues = (values: Record<string, any>) => {
+  const formatted: Record<string, any> = {};
+
+  for (const [key, value] of Object.entries(values)) {
+    if (value?.isValid && typeof value.format === "function") {
+      formatted[key] = value.format("YYYY-MM-DD");
+    } else if (value instanceof Date) {
+      formatted[key] = value.toISOString().split("T")[0]; // fallback
+    } else {
+      formatted[key] = value;
+    }
+  }
+
+  return formatted;
+};

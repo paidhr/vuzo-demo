@@ -13,57 +13,36 @@ import ForgotPassword from "./components/auth/ForgotPassword";
 import VerifyAccount from "./components/auth/VerifyAccount";
 import ResetPassword from "./components/auth/ResetPassword";
 
+// route-config.tsx
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div></div>}>
-        <App />
+      <Suspense fallback={<div>Loading...</div>}>
+        <App /> {/* Contains global providers only */}
       </Suspense>
     ),
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
-        element: (
-          <Suspense fallback={<div></div>}>
-            <DashboardLayout />
-          </Suspense>
-        ),
-        children: dashboardRoutes as RouteObject[],
-      },
-      ...authRoutes,
-    ],
-  },
-  {
-    path: "auth/",
-    element: <AuthLayout />,
-    children: [
-      {
-        index: true,
-        path: "login",
-        element: <Login />,
+        path: "",
+        element: <DashboardLayout />, 
+        children: dashboardRoutes,
       },
       {
-        path: "forgot-password",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "verify",
-        element: <VerifyAccount />,
-      },
-      {
-        path: "reset-password",
-        element: <ResetPassword />,
+        path: "auth/",
+        element: <AuthLayout />, 
+        children: [
+          { index: true, path: "login", element: <Login /> },
+          { path: "forgot-password", element: <ForgotPassword /> },
+          { path: "verify", element: <VerifyAccount /> },
+          { path: "reset-password", element: <ResetPassword /> },
+        ],
       },
     ],
-  },
-
-  // unknown page
-  {
-    path: "*",
-    element: <UnknownPage />,
   },
 ]);
+
 
 export default router;

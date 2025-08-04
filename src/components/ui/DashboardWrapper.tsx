@@ -17,7 +17,7 @@ const DashboardWrapper: React.FC<props> = ({
   return (
     <div
       className={cn(
-        "w-full h-full px-4 md:px-6 lg:px-10 py-5",
+        "w-full h-full ",
         centered && "mx-auto",
         className
       )}

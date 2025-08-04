@@ -2,28 +2,14 @@ import { Button } from "@/components/ui/button";
 import DashboardWrapper from "@/components/ui/DashboardWrapper";
 import DynamicForm, { FieldConfig } from "@/components/ui/form/form-builder";
 import SegmentWrapper from "@/components/ui/SegmentWrapper";
+import { axiosPrivateInstance } from "@/lib/axios-config";
 import { currencies } from "@/utils/currencies";
+import { useMutation } from "@tanstack/react-query";
 import { Collapse, Form } from "antd";
 import type { CollapseProps } from "antd";
 import { FC } from "react";
+import { IPayGradePayload } from "./interface";
 
-const items: CollapseProps["items"] = [
-  {
-    key: "1",
-    label: "Paygrade",
-    children: <p>mm,</p>,
-  },
-  {
-    key: "2",
-    label: "Allowances",
-    children: <p>mm,</p>,
-  },
-  {
-    key: "3",
-    label: "Tax Configuration",
-    children: <p>mm,</p>,
-  },
-];
 
 const PaygradeFieldConfig: FieldConfig[] = [
   {
@@ -43,6 +29,7 @@ const PaygradeFieldConfig: FieldConfig[] = [
     name: "annual_gross",
     label: "Annual Gross",
     type: "input",
+    inputType: "number",
     placeholder: "",
     rules: [{ required: true, message: "Annual Gross is required" }],
   },
@@ -54,7 +41,8 @@ const PaygradeFieldConfig: FieldConfig[] = [
       label: i.description,
       value: i.code,
     })),
-    rules: [{ required: true, message: "Taxable preference is required" }],
+    rules: [{ required: true, message: "Currency is required" }],
+    placeholder: "Select a currency",
   },
   {
     name: "taxable",
@@ -66,16 +54,91 @@ const PaygradeFieldConfig: FieldConfig[] = [
     ],
     rules: [{ required: true, message: "Taxable preference is required" }],
   },
+
+  // Tax config fields (nested: tax_config)
+  {
+    name: ["tax_config", "is_automated"],
+    label: "Automate Tax?",
+    type: "radio",
+    options: [
+      { label: "Yes", value: "true" },
+      { label: "No", value: "false" },
+    ],
+    rules: [{ required: true, message: "Tax automation preference is required" }],
+  },
+  {
+    name: ["tax_config", "basis"],
+    label: "Tax Basis",
+    type: "select",
+    options: [
+      { label: "Fixed Amount", value: "fixed_amount" },
+      { label: "Percentage of Gross Earning", value: "percentage_of_gross_earning" },
+    ],
+    rules: [{ required: true, message: "Tax basis is required" }],
+    placeholder: "Select basis",
+  },
+  {
+    name: ["tax_config", "value"],
+    label: "Tax Value",
+    type: "input",
+    inputType: "number",
+    placeholder: "Enter tax amount or percentage",
+    rules: [{ required: true, message: "Tax value is required" }],
+  },
+
+  // You can render these separately with a custom repeater-style form group:
+  // Allowances
+  // {
+  //   name: "allowances",
+  //   type: "custom", // e.g. you can build a repeater list that maps to the Allowance interface
+  // }
+
+  // Statutory Benefits
+  // {
+  //   name: "statutory_benefits",
+  //   type: "custom",
+  // }
+
 ];
 
 const CreatePaygrade: FC = () => {
   const [form] = Form.useForm();
+    const url=`v1/paygrades/:company`;
+
+ const { mutate, isPending } = useMutation({
+    mutationFn: async (body: IPayGradePayload) => {
+      const res = await axiosPrivateInstance.post(
+        url,
+        body
+      );
+      return res.data;
+    },
+    onSuccess: (data: any) => {
+    //   toast({
+    //     variant:""
+    //     title:
+    //       error.response.data.message === "Incorrect password"
+    //         ? "Incorrect email or password"
+    //         : error.response.data.message,
+    //   });
+    },
+
+    onError: (error: any) => {
+    //   toast({
+    //     variant: "destructive",
+    //     title:
+    //       error.response.data.message === "Incorrect password"
+    //         ? "Incorrect email or password"
+    //         : error.response.data.message,
+    //   });
+    },
+  });
   return (
     <DashboardWrapper>
       <div className="flex flex-col gap-10">
         <SegmentWrapper
-          title="Paygrade"
-          subtitle=""
+          title="Create Paygrade"
+          subtitle="Add a new paygrade to your organization to manage its employees and payroll structure."
           footerBtns={
             <div className="flex justify-end w-full gap-3">
               <Button variant="secondary">Cancel</Button>
@@ -91,8 +154,9 @@ const CreatePaygrade: FC = () => {
           }
         >
           <div className="px-4 md:px-6 xl:px-[60px]">
-            <Collapse items={items} defaultActiveKey={["1"]} />;
+           
             <DynamicForm
+            url={url}
               title="Create Paygrade"
               fields={PaygradeFieldConfig}
               onFinish={(values) => {
