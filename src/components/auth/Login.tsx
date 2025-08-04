@@ -103,6 +103,7 @@ const Login = () => {
           form={form}
           onFinish={onFinish}
           autoComplete="off"
+          initialValues={{email:"kebbikolanut@yopmail.com", password: "1234%Test"}}
         >
           <div>
             <div className="flex flex-col ">

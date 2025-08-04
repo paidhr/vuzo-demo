@@ -12,13 +12,13 @@ const DashboardLayout: React.FC = () => {
   const [isSidebarOpen, toggleSidebar] = useState(false);
   const navigate = useNavigate();
 
-  // const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate("/auth/login", { replace: true });
-  //   }
-  // }, [isAuthenticated]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/auth/login", { replace: true });
+    }
+  }, [isAuthenticated]);
 
   return (
     <Layout>

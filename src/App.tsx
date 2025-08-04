@@ -10,17 +10,13 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#004AF5",
-            },
-          }}
+          theme={{ token: { colorPrimary: "#004AF5" } }}
         >
           <Outlet />
         </ConfigProvider>
+        <Toaster />
+        <ScrollRestoration />
       </QueryClientProvider>
-      <Toaster />
-      <ScrollRestoration />
     </>
   );
 }

@@ -20,18 +20,24 @@ type Page = { title: string; path: string; subPages?: Page[] };
 
 const PAGES: Page[] = [
   { title: "Home", path: "/" },
-  // {
-  //   title: "Companies",
-  //   path: "/companies",
-  //   subPages: [
-  //     { title: "View Company",    path: "/companies/:id" },
-  //     { title: "View Workplaces", path: "/companies/:id/workplaces" },
-  //     { title: "View Paygrades", path: "/companies/:id/paygrades" },
-  //     { title: "View Allowances", path: "/companies/:id/allowances" },
-  //     { title: "View Pay Schedules", path: "/companies/:id/payschedules" },
-  //     { title: "View Employees", path: "/companies/:id/people" },
-  //   ],
-  // },
+  {
+    title: "Companies",
+    path: "/company",
+    subPages: [
+      { title: "Create Company",    path: "/company/create" },
+      { title: "Get Companies",    path: "/company/get" },
+
+    ],
+  },
+  {
+    title: "Workplaces",
+    path: "/workplace",
+    subPages: [
+      { title: "Create Workplace",    path: "/workplace/create" },
+      { title: "Get Workplaces",    path: "/workplace/get" },
+
+    ],
+  },
   { title: "Create Paygrade", path: "/payroll/paygrades/create" },
   { title: "Create Payband", path: "/payroll/paybands/create" },
   { title: "Create Allowance", path: "/payroll/allowances/create" },
