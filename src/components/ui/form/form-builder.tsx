@@ -12,10 +12,8 @@ import { useMemo } from "react";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-
-
 export type DependencyConfig = {
-  field: string; 
+  field: string;
   condition:
     | "equals"
     | "notEquals"
@@ -23,13 +21,13 @@ export type DependencyConfig = {
     | "notIncludes"
     | "exists"
     | "notExists";
-  value?: string | string[] | number | boolean; 
-  action: "show" | "hide" | "enable" | "disable"; 
+  value?: string | string[] | number | boolean;
+  action: "show" | "hide" | "enable" | "disable";
 };
 
 export type FieldConfig = {
- name: string | string[];
-   label: string;
+  name: string | string[];
+  label: string;
   type:
     | "input"
     | "select"
@@ -39,7 +37,7 @@ export type FieldConfig = {
     | "radio"
     | "checkbox";
   placeholder?: string;
-  inputType?: "text" | "email" | "number" | "tel" | "url" | "password"; 
+  inputType?: "text" | "email" | "number" | "tel" | "url" | "password";
   options?: Option[];
   rules?: any[];
   dependencies?: DependencyConfig;
@@ -53,7 +51,7 @@ export interface Option {
 export type DynamicFormProps = {
   fields: FieldConfig[];
   showDebugPanel?: boolean;
-  url:string
+  url: string;
 } & FormProps;
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
@@ -144,7 +142,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
     switch (field.type) {
       case "input":
-        return <Input placeholder={field.placeholder} type={field.inputType || "text"} {...commonProps} />;
+        return (
+          <Input
+            placeholder={field.placeholder}
+            type={field.inputType || "text"}
+            {...commonProps}
+          />
+        );
       case "select":
         return (
           <Select
@@ -203,10 +207,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           />
         );
       case "date":
-        return <DatePicker {...commonProps}     format= "YYYY-MM-DD"
- />;
+        return <DatePicker {...commonProps} format="YYYY-MM-DD" />;
       case "dateRange":
-        return <RangePicker {...commonProps} format= "YYYY-MM-DD" />;
+        return <RangePicker {...commonProps} format="YYYY-MM-DD" />;
       case "radio":
         return (
           <Radio.Group disabled={!isEnabled}>
@@ -234,51 +237,50 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
   return (
     <div>
-   
-
-      <Form  layout="vertical" {...rest}>
-    <div className="grid grid-cols-2 gap-x-4 gap-y-0">
+      <Form layout="vertical" {...rest}>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-0">
           {fields?.map((field) => {
-          const isVisible = shouldShowField(field);
-          const isEnabled = shouldEnableField(field);
-          const dynamicRules = getDynamicRules(field);
+            const isVisible = shouldShowField(field);
+            const isEnabled = shouldEnableField(field);
+            const dynamicRules = getDynamicRules(field);
 
-          if (!isVisible) {
-            return null; // Don't render hidden fields
-          }
+            if (!isVisible) {
+              return null; // Don't render hidden fields
+            }
 
-          return (
-            <Form.Item
-key={Array.isArray(field.name) ? field.name.join(".") : field.name}
-              name={field.name}
-              label={field.label}
-              rules={dynamicRules}
-              style={{
-                opacity: isEnabled ? 1 : 0.6,
-                transition: "opacity 0.3s ease",
-              }}
-            >
-              {renderField(field, isEnabled)}
-            </Form.Item>
-          );
-        })}
-    </div>
+            return (
+              <Form.Item
+                key={
+                  Array.isArray(field.name) ? field.name.join(".") : field.name
+                }
+                name={field.name}
+                label={field.label}
+                rules={dynamicRules}
+                style={{
+                  opacity: isEnabled ? 1 : 0.6,
+                  transition: "opacity 0.3s ease",
+                }}
+              >
+                {renderField(field, isEnabled)}
+              </Form.Item>
+            );
+          })}
+        </div>
       </Form>
-       {showDebugPanel && (
-  <div className="font-mono text-xs my-5 rounded-md bg-padeLightBlue p-4">
-    <p className="mb-2">
-      Url: <span className="text-blue-600">{url}</span>
-    </p>
-    <strong className="block mb-1">Current Form Values:</strong>
-    <pre
-      className="whitespace-pre-wrap"
-      dangerouslySetInnerHTML={{
-        __html: prettyPrintJson(formatFormValues(watchedValues)),
-      }}
-    />
-  </div>
-)}
-
+      {showDebugPanel && (
+        <div className="font-mono text-xs my-5 rounded-md bg-padeLightBlue p-4">
+          <p className="mb-2">
+            Url: <span className="text-blue-600">{url}</span>
+          </p>
+          <strong className="block mb-1">Current Form Values:</strong>
+          <pre
+            className="whitespace-pre-wrap"
+            dangerouslySetInnerHTML={{
+              __html: prettyPrintJson(formatFormValues(watchedValues)),
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -288,9 +290,9 @@ export default DynamicForm;
 const prettyPrintJson = (obj: any) => {
   const json = JSON.stringify(obj, null, 2);
   return json
-    .replace(/"([^"]+)":/g, '<span class="text-red-600">"$1"</span>:') 
-    .replace(/: "([^"]+)"/g, ': <span class="text-green-600">"$1"</span>') 
-    .replace(/: ([0-9]+)/g, ': <span class="text-green-600">$1</span>'); 
+    .replace(/"([^"]+)":/g, '<span class="text-red-600">"$1"</span>:')
+    .replace(/: "([^"]+)"/g, ': <span class="text-green-600">"$1"</span>')
+    .replace(/: ([0-9]+)/g, ': <span class="text-green-600">$1</span>');
 };
 const formatFormValues = (values: Record<string, any>) => {
   const formatted: Record<string, any> = {};
