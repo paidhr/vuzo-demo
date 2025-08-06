@@ -183,7 +183,7 @@ const CreateCompany = () => {
             </div>
           }
         >
-          <div className="px-4 md:px-6 xl:px-[60px]">
+          <div className="px-4 md:px-8">
             <DynamicForm
               url={url}
               fields={create_ompany_fields}
@@ -199,10 +199,10 @@ const CreateCompany = () => {
               }}
               form={form}
               showDebugPanel
-              initialValues={{
-                taxable: "yes",
-                type: "regular",
-              }}
+              // initialValues={{
+              //   taxable: "yes",
+              //   type: "regular",
+              // }}
             />
           </div>
         </SegmentWrapper>

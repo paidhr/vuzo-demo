@@ -3,9 +3,11 @@ import DynamicForm, { FieldConfig } from "@/components/ui/form/form-builder";
 import SegmentWrapper from "@/components/ui/SegmentWrapper";
 import { Button } from "@/components/ui/button";
 import { countries } from "../company/sampleData/countries";
+import { Form } from "antd";
 
 const CreateEmployee = () => {
-  // CREATE EMPLOYEE FIELDS DATA
+   const [form] = Form.useForm();
+  const url = `/v1/employees/:company`;
   const create_employee_field: FieldConfig[] = [
     {
       name: "first_name",
@@ -340,8 +342,8 @@ const CreateEmployee = () => {
             </div>
           }
         >
-          <div className="px-4 md:px-6 xl:px-[60px]">
-            <DynamicForm url="" fields={create_employee_field} />
+          <div className="px-4 md:px-8">
+            <DynamicForm   form={form} url="" fields={create_employee_field} showDebugPanel />
           </div>
         </SegmentWrapper>
       </DashboardWrapper>

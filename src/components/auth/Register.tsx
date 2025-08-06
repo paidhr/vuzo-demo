@@ -78,7 +78,7 @@ const Register = () => {
       <div className="flex flex-col items-center gap-4">
         <img src={logos.PadeLogo} alt="Pade Logo" className="" width={120} />
         <p className="font-circular font-medium text-[16px] leading-[20.8px] text-[#5D6B82] mb-[43px]">
-          Vuzo App
+          Vuzo Mockup
         </p>
       </div>
 

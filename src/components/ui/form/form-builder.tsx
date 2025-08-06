@@ -6,8 +6,14 @@ import {
   Radio,
   Checkbox,
   type FormProps,
+  Alert,
 } from "antd";
 import { useMemo } from "react";
+import { H4, H6 } from "../typography";
+import CopyToClipboard from "@/utils/copy-to-clipboard";
+import { toast } from '@/components/ui/use-toast';
+import { Copy } from "lucide-react";
+import DebugPanel from "@/components/pages/organizational/company/component/DebugPanel";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -236,8 +242,19 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   };
 
   return (
-    <div>
-      <Form layout="vertical" {...rest}>
+    <div className=" flex  justify-between gap-[30px] h-screen">
+      <div className="h-full overflow-y-scroll ">
+        <Form layout="vertical" {...rest} rootClassName="flex-grow">
+        <div className="mb-4">
+                          <Alert
+                            message={
+                              "Use the form on the left to simulate the company creation process. As you fill out each field, the code snippet on the right updates in real time to reflect the API request payload you’ll need in your implementation."
+                            }
+                            type="info"
+                            showIcon
+                            className="bg-[#E8F0FE]  font-avenir text-neutral500 text-sm w-full flex justify-between items-center "
+                          />
+                        </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-0">
           {fields?.map((field) => {
             const isVisible = shouldShowField(field);
@@ -245,7 +262,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             const dynamicRules = getDynamicRules(field);
 
             if (!isVisible) {
-              return null; // Don't render hidden fields
+              return null; 
             }
 
             return (
@@ -261,25 +278,20 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                   transition: "opacity 0.3s ease",
                 }}
               >
+                <>
+                            
+
                 {renderField(field, isEnabled)}
+                </>
               </Form.Item>
             );
           })}
         </div>
       </Form>
+      </div>
       {showDebugPanel && (
-        <div className="font-mono text-xs my-5 rounded-md bg-padeLightBlue p-4">
-          <p className="mb-2">
-            Url: <span className="text-blue-600">{url}</span>
-          </p>
-          <strong className="block mb-1">Current Form Values:</strong>
-          <pre
-            className="whitespace-pre-wrap"
-            dangerouslySetInnerHTML={{
-              __html: prettyPrintJson(formatFormValues(watchedValues)),
-            }}
-          />
-        </div>
+        <DebugPanel url={url} values={prettyPrintJson(formatFormValues(watchedValues))} />
+    
       )}
     </div>
   );
@@ -287,13 +299,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
 export default DynamicForm;
 
-const prettyPrintJson = (obj: any) => {
-  const json = JSON.stringify(obj, null, 2);
-  return json
-    .replace(/"([^"]+)":/g, '<span class="text-red-600">"$1"</span>:')
-    .replace(/: "([^"]+)"/g, ': <span class="text-green-600">"$1"</span>')
-    .replace(/: ([0-9]+)/g, ': <span class="text-green-600">$1</span>');
-};
+
 const formatFormValues = (values: Record<string, any>) => {
   const formatted: Record<string, any> = {};
 
@@ -308,4 +314,12 @@ const formatFormValues = (values: Record<string, any>) => {
   }
 
   return formatted;
+};
+
+const prettyPrintJson = (obj: any) => {
+  const json = JSON.stringify(obj, null, 2);
+  return json
+    .replace(/"([^"]+)":/g, '<span class="text-[#13B378]">"$1"</span>:')
+    .replace(/: "([^"]+)"/g, ': <span class="text-[#13B378]">"$1"</span>')
+    .replace(/: ([0-9]+)/g, ': <span class="text-[#13B378]">$1</span>');
 };

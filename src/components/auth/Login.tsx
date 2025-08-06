@@ -92,7 +92,7 @@ const Login = () => {
       <div className="flex flex-col items-center gap-3">
         <img src={logos.PadeLogo} alt="Pade Logo" className="" width={120} />
         <p className="font-circular font-medium text-lg text-padeBlack mb-10">
-          Vuzo App
+          Vuzo Mockup
         </p>
       </div>
 
