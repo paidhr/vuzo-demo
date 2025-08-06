@@ -71,6 +71,7 @@ const CreateAllowance = () => {
                 taxable: "yes",
                 type: "regular",
               }}
+              url=""
             />
           </div>
         </SegmentWrapper>
