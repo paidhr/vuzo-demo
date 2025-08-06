@@ -7,6 +7,7 @@ import { Table, TableColumnsType } from 'antd';
 import { Copy } from 'lucide-react';
 import CopyToClipboard from '@/utils/copy-to-clipboard';
 import { toast } from '@/components/ui/use-toast';
+import DebugPanel from './component/DebugPanel';
 
 const GetCompanies = () => {
     const url=`/v1/companies?page=${1}&page_size=${150}`
@@ -97,8 +98,8 @@ const GetCompanies = () => {
   return (
       <DashboardWrapper>
 
-          <div className='px-4 md:px-6 lg:px-10 py-5'>
-                  <div className="my-2">
+          <div className=' flex  justify-between gap-[30px] h-screen'>
+                  <div className="my-2 w-[60%] ">
        
         <Table
         tableLayout="auto"
@@ -123,30 +124,9 @@ const GetCompanies = () => {
           }}
         />
       </div>
-          { data&& <div className="font-mono text-xs my-5 rounded-md bg-padeLightBlue p-4">
-  <div className='flex items-center justify-between'>
-      <p className="mb-2">
-      Url: <span className="text-blue-600">{url}</span>
-    </p>
-
-    <button onClick={()=>{
-      CopyToClipboard(JSON.stringify(data, null, 2));
-      toast({
-          variant: "success",
-          title:
-            "Copied",
-        });
-    }} className='px-2 py-1 border border-black rounded flex items-center gap-2'><p className='text-sm'>Copy</p> <Copy className='h-4 w-4'/> </button>
-
-  </div>
-    <strong className="block mb-1">Response:</strong>
-    <pre
-      className="whitespace-pre-wrap"
-      dangerouslySetInnerHTML={{
-        __html: data ? JSON.stringify(data, null, 2) : 'Loading...',
-      }}
-    />
-    </div>}
+          { data&&
+         
+        <DebugPanel title="Response:" url={url} values={JSON.stringify(data, null, 2)} />}
     </div>
       </DashboardWrapper>
   )

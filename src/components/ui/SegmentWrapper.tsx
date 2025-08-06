@@ -32,7 +32,7 @@ const SegmentWrapper = ({
     >
       {/* ---- Heading ---- */}
       <div
-        className="w-full px-4 md:px-6 lg:px-8 xl:px-[60px]"
+        className="w-full px-4 md:px-6 lg:px-8"
         onClick={() => onHeadingClick?.()}
       >
         <div className="flex justify-between gap-4 lg:gap-8">

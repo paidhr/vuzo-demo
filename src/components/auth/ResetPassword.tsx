@@ -88,7 +88,7 @@ const ResetPassword = () => {
               width={120}
             />
             <p className="font-circular font-medium text-lg text-padeBlack mb-10">
-              Vuzo App
+              Vuzo Mockup
             </p>
           </div>
           {/* form */}
