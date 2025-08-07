@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import DashboardWrapper from "@/components/ui/DashboardWrapper";
 import DynamicForm, { FieldConfig } from "@/components/ui/form/form-builder";
 import { countries } from "../company/sampleData/countries";
+import { Form } from "antd";
 const CreateWorkplace = () => {
+    const [form] = Form.useForm();
+
   // CREATE WORKDPLACE FIELDS DATA
   const create_workplace_field: FieldConfig[] = [
     {
@@ -110,8 +113,9 @@ const CreateWorkplace = () => {
             </div>
           }
         >
-          <div className="px-4 md:px-6 xl:px-[60px]">
-            <DynamicForm url="" fields={create_workplace_field} />
+          <div className="px-4 md:px-8">
+            <DynamicForm               form={form}
+ url="" fields={create_workplace_field} />
           </div>
         </SegmentWrapper>
       </DashboardWrapper>

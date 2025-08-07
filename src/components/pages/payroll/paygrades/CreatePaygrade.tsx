@@ -153,7 +153,7 @@ const CreatePaygrade: FC = () => {
             </div>
           }
         >
-          <div className="px-4 md:px-6 xl:px-[60px]">
+          <div className="px-4 md:px-8  ">
            
             <DynamicForm
             url={url}

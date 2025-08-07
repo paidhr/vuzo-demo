@@ -198,7 +198,7 @@ const CreateCompany = () => {
                 mutate(formattedValues);
               }}
               form={form}
-              showDebugPanel
+              
               // initialValues={{
               //   taxable: "yes",
               //   type: "regular",
