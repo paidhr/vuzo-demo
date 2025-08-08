@@ -41,7 +41,7 @@ const CreateCompany = () => {
   });
 
   // CREATE COMPANY FIELDS DATA
-  const create_ompany_fields: FieldConfig[] = [
+  const create_company_fields: FieldConfig[] = [
     {
       name: "business_name",
       label: "Business Name",
@@ -186,7 +186,7 @@ const CreateCompany = () => {
           <div className="px-4 md:px-8">
             <DynamicForm
               url={url}
-              fields={create_ompany_fields}
+              fields={create_company_fields}
               onFinish={(values) => {
                 console.log("Form Submitted:", values);
                 const formattedValues = {

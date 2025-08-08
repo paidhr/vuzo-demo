@@ -71,7 +71,7 @@ const CreateAllowance = () => {
                 taxable: "yes",
                 type: "regular",
               }}
-              url=""
+              url="/v1/allowance/{companyID}"
             />
           </div>
         </SegmentWrapper>
