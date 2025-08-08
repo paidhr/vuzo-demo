@@ -9,6 +9,7 @@ import { ICompanyPayload } from "./interface";
 import { businessType } from "./sampleData/businessType";
 import { countries } from "./sampleData/countries";
 import { industries } from "./sampleData/industries";
+import { toast } from '@/components/ui/use-toast';
 
 const CreateCompany = () => {
   const [form] = Form.useForm();
@@ -20,23 +21,22 @@ const CreateCompany = () => {
       return res.data;
     },
     onSuccess: (data: any) => {
-      //   toast({
-      //     variant:""
-      //     title:
-      //       error.response.data.message === "Incorrect password"
-      //         ? "Incorrect email or password"
-      //         : error.response.data.message,
-      //   });
+        toast({
+          variant:"success",
+          title:"Success"
+            
+        });
+        form.resetFields()
     },
 
     onError: (error: any) => {
-      //   toast({
-      //     variant: "destructive",
-      //     title:
-      //       error.response.data.message === "Incorrect password"
-      //         ? "Incorrect email or password"
-      //         : error.response.data.message,
-      //   });
+        toast({
+          variant: "destructive",
+          title:
+            error.response.data.message === "Incorrect password"
+              ? "Incorrect email or password"
+              : error.response.data.message,
+        });
     },
   });
 
@@ -199,10 +199,11 @@ const CreateCompany = () => {
               }}
               form={form}
               
-              // initialValues={{
-              //   taxable: "yes",
-              //   type: "regular",
-              // }}
+              initialValues={{
+    address: {
+      state: "01",
+    },
+  }}
             />
           </div>
         </SegmentWrapper>
