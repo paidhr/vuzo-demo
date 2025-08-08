@@ -1,18 +1,20 @@
 import { axiosPrivateInstance } from '@/lib/axios-config';
-import React from 'react'
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import DashboardWrapper from '@/components/ui/DashboardWrapper';
 import { Table, TableColumnsType } from 'antd';
-import { Check, Copy, X } from 'lucide-react';
-import CopyToClipboard from '@/utils/copy-to-clipboard';
-import { toast } from '@/components/ui/use-toast';
+import { Check, X } from 'lucide-react';
 import { IPaygrade, IPaygradesData } from './interface';
 import DebugPanel from '../../organizational/company/component/DebugPanel';
 import { formatNumber } from '@/utils/formatNumber';
+import SelectCompany from '../../organizational/company/component/SelectCompany';
 
 const GetPaygrades = () => {
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const id=`ffa10931-5fc0-47c6-bb24-e6186eca1c8a2`
-    const url=`/v1/paygrades?company=${id}&page=1&page_size=150`
+
+  
+    const url=selectedCompany?`/v1/paygrades?company=${selectedCompany}&page=1&page_size=150`:``
     const { data, isPending } = useQuery<IPaygradesData>({
     queryFn: async () => {
 
@@ -20,7 +22,7 @@ const GetPaygrades = () => {
       const res = await axiosPrivateInstance.get(endpoint);
       return res.data;
     },
-    queryKey: ["paygrades", id],
+    queryKey: ["paygrades", selectedCompany],
   });
 
   const columns: TableColumnsType<IPaygrade> = [
@@ -81,6 +83,7 @@ const GetPaygrades = () => {
   return (
       <DashboardWrapper>
 
+       <>
           <div className=' flex  justify-between gap-[30px] h-screen'>
                   <div className="my-2 w-[60%] ">
        
@@ -111,6 +114,8 @@ const GetPaygrades = () => {
          
         <DebugPanel title="Response:" url={url} values={JSON.stringify(data, null, 2)} />}
     </div>
+    {!selectedCompany&& (<SelectCompany title="Select company to view paygrade" setSelectedCompany={setSelectedCompany}/>)}
+    </>)
       </DashboardWrapper>
   )
 }
