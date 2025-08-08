@@ -38,9 +38,17 @@ const PAGES: Page[] = [
 
     ],
   },
-  { title: "Create Paygrade", path: "/payroll/paygrades/create" },
-  { title: "Create Payband", path: "/payroll/paybands/create" },
-  { title: "Create Allowance", path: "/payroll/allowances/create" },
+  { title: "Paygrades", path: "/paygrade" ,subPages:[
+         { title: "Create Paygrade",    path: "/paygrade/create" },
+         { title: "Get Paygrades",    path: "/paygrade/get" },
+
+  ]},
+  { title: "Paybands", path: "/payband",subPages:[
+         { title: "Create Payband",    path: "/payband/create" },
+         { title: "Get Paybands",    path: "/payband/get" },
+
+  ] },
+  { title: "Create Allowance", path: "/allowance/create" },
 ];
 
 const pagesToRoutes = (nodes: Page[]): RouteObject[] =>
@@ -187,7 +195,7 @@ export const TopNavigationBar: React.FC<{
       <div className="flex-grow" />
 
       {/* User avatar / dropdown */}
-      {/* <UserProfile /> */}
+      <UserProfile />
     </div>
   );
 };

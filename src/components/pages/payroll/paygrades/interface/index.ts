@@ -56,3 +56,37 @@ export interface StatutoryBenefit {
   contribution: number;
   deduction: number;
 }
+
+export interface IPaygrade {
+  id: string;
+  name: string;
+  alias: string;
+  annual_gross: number;
+  monthly_gross: number;
+  daily_gross: number;
+  annual_net: number;
+  monthly_net: number;
+  daily_net: number;
+  currency: string;
+  is_taxable: boolean;
+  tax_config: any | null; 
+}
+
+interface PageInfo {
+  current_page: number;
+  page_size: number;
+  total_items: number;
+  total_pages: number;
+}
+
+interface PaygradesData {
+  page_info: PageInfo;
+  paygrades: IPaygrade[];
+}
+
+export interface IPaygradesData {
+  success: boolean;
+  code: number;
+  message: string;
+  data: PaygradesData;
+}

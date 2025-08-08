@@ -63,7 +63,7 @@ export type DynamicFormProps = {
 const DynamicForm: React.FC<DynamicFormProps> = ({
   fields,
   url,
-  showDebugPanel = false,
+  showDebugPanel = true,
   ...rest
 }) => {
   // Watch all form values for dependency evaluation
