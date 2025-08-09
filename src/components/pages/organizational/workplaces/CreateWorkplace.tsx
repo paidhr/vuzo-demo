@@ -4,8 +4,15 @@ import DashboardWrapper from "@/components/ui/DashboardWrapper";
 import DynamicForm, { FieldConfig } from "@/components/ui/form/form-builder";
 import { countries } from "../company/sampleData/countries";
 import { Form } from "antd";
+import SelectCompany from "../company/component/SelectCompany";
+import { useState } from "react";
 const CreateWorkplace = () => {
-    const [form] = Form.useForm();
+  const [form] = Form.useForm();
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+
+  const url = selectedCompany
+    ? `/v1/workplaces?company=${selectedCompany}`
+    : ``;
 
   // CREATE WORKDPLACE FIELDS DATA
   const create_workplace_field: FieldConfig[] = [
@@ -114,11 +121,16 @@ const CreateWorkplace = () => {
           }
         >
           <div className="px-4 md:px-8">
-            <DynamicForm               form={form}
- url="" fields={create_workplace_field} />
+            <DynamicForm form={form} url="" fields={create_workplace_field} />
           </div>
         </SegmentWrapper>
       </DashboardWrapper>
+      {!selectedCompany && (
+        <SelectCompany
+          title="Select company to create a workplaces"
+          setSelectedCompany={setSelectedCompany}
+        />
+      )}
     </>
   );
 };

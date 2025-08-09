@@ -5,6 +5,8 @@ import DynamicForm, {
 } from "@/components/ui/form/form-builder";
 import SegmentWrapper from "@/components/ui/SegmentWrapper";
 import { Form } from "antd";
+import SelectCompany from "../../organizational/company/component/SelectCompany";
+import { useState } from "react";
 
 const fields: FieldConfig[] = [
   {
@@ -38,6 +40,12 @@ const fields: FieldConfig[] = [
 
 const CreateAllowance = () => {
   const [form] = Form.useForm();
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const id = `ffa10931-5fc0-47c6-bb24-e6186eca1c8a2`;
+
+  const url = selectedCompany
+    ? `/v1/allowances?company=${selectedCompany}`
+    : ``;
 
   return (
     <div>
@@ -76,6 +84,12 @@ const CreateAllowance = () => {
           </div>
         </SegmentWrapper>
       </DashboardWrapper>
+      {!selectedCompany && (
+        <SelectCompany
+          title="Select company to create a employees"
+          setSelectedCompany={setSelectedCompany}
+        />
+      )}
     </div>
   );
 };

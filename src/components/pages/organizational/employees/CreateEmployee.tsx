@@ -4,10 +4,14 @@ import SegmentWrapper from "@/components/ui/SegmentWrapper";
 import { Button } from "@/components/ui/button";
 import { countries } from "../company/sampleData/countries";
 import { Form } from "antd";
+import SelectCompany from "../company/component/SelectCompany";
+import { useState } from "react";
 
 const CreateEmployee = () => {
-   const [form] = Form.useForm();
-  const url = `/v1/employees/:company`;
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+
+  const url = selectedCompany ? `/v1/employees?company=${selectedCompany}` : ``;
+  const [form] = Form.useForm();
   const create_employee_field: FieldConfig[] = [
     {
       name: "first_name",
@@ -343,10 +347,21 @@ const CreateEmployee = () => {
           }
         >
           <div className="px-4 md:px-8">
-            <DynamicForm   form={form} url="" fields={create_employee_field} showDebugPanel />
+            <DynamicForm
+              form={form}
+              url=""
+              fields={create_employee_field}
+              showDebugPanel
+            />
           </div>
         </SegmentWrapper>
       </DashboardWrapper>
+      {!selectedCompany && (
+        <SelectCompany
+          title="Select company to create a employees"
+          setSelectedCompany={setSelectedCompany}
+        />
+      )}
     </>
   );
 };
